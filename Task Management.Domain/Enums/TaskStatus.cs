@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_Management.Domain
+namespace Task_Management.Domain.Enums
 {
-    class Class1
+    public enum enTaskStatus
     {
+        ToDo,
+        InProgress,
+        Done
     }
 }
