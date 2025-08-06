@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Task_Management.Domain.Entities;
@@ -16,6 +11,7 @@ namespace Task_Management.Infrastructure.Persistence.Data
         public DbSet<Board> Boards { get; set; }
         public DbSet<TaskItem> TaskItems { get; set; }
         public DbSet<TaskActivity> TaskActivities { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

@@ -1,7 +1,11 @@
 using Task_Management.Domain.Entities;
 using Task_Management.Domain.Interfaces;
+using Task_Management.Application.Extensions;
 using Task_Management.Infrastructure.Extensions;
 using Task_Management.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Task_Management
 {
@@ -18,6 +22,8 @@ namespace Task_Management
             builder.Services.AddOpenApi();
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IRepository<TaskItem>, TaskRepository>();
@@ -26,6 +32,31 @@ namespace Task_Management
 
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["JWT:Issuer"],
+
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["JWT:Audience"],
+
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)),
+
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
 
             var app = builder.Build();
 
@@ -39,6 +70,7 @@ namespace Task_Management
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Task_Management.Application.Interfaces;
 using Task_Management.Domain.Entities;
 using Task_Management.Infrastructure.Persistence.Data;
+using Task_Management.Infrastructure.Services;
 
 namespace Task_Management.Infrastructure.Extensions
 {
@@ -22,6 +19,8 @@ namespace Task_Management.Infrastructure.Extensions
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IJwtTokenService, JwtTokenServices>();
         }
     }
 }
