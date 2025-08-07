@@ -8,7 +8,7 @@ namespace Task_Management.Domain.Entities
         public string ProjectName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        public Guid UserID { get; set; }
+        public string UserID { get; set; } = string.Empty;
         public ApplicationUser? User { get; set; }
 
         public List<Board>? Boards { get; set; }

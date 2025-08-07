@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Task_Management.Application.Dtos;
 using Task_Management.Application.Interfaces;
 using Task_Management.Domain.Entities;
+using Task_Management.Domain.Exceptions;
 using Task_Management.Infrastructure.Persistence.Data;
 
 namespace Task_Management.Infrastructure.Services
@@ -71,7 +72,7 @@ namespace Task_Management.Infrastructure.Services
                 Token = Convert.ToBase64String(RandomBytes),
                 CreatedOn = DateTime.Now,
                 ExpiresOn = DateTime.Now.AddDays(7),
-                ApplicationUserID = UserID
+                UserID = UserID
             };
 
             await _context.RefreshTokens.AddAsync(refreshToken);
@@ -99,7 +100,7 @@ namespace Task_Management.Infrastructure.Services
         public async Task<bool> RevokeTokenAsync(string RefreshToken)
         {
             if (String.IsNullOrWhiteSpace(RefreshToken))
-                throw new ApplicationException("Refresh token is required");
+                throw new TokenException("Refresh token is required");
 
             RefreshToken? StoredRefreshToken = await _context.RefreshTokens
                 .SingleOrDefaultAsync(RF => RF.Token == RefreshToken && (RF.RevokedOn == null && RF.ExpiresOn >= DateTime.UtcNow));
@@ -117,17 +118,17 @@ namespace Task_Management.Infrastructure.Services
         public async Task<AuthGeneralResponse> RefreshTokenAsync(string RefreshToken)
         {
             if (string.IsNullOrEmpty(RefreshToken))
-                throw new ApplicationException("Refresh token is required");
+                throw new TokenException("Refresh token is required");
 
             RefreshToken? StoredRefreshToken = await _context.RefreshTokens
                .SingleOrDefaultAsync(RF => RF.Token == RefreshToken && (RF.RevokedOn == null && RF.ExpiresOn >= DateTime.UtcNow));
 
             if (StoredRefreshToken is null)
-                throw new ApplicationException("Invalid or expired Refresh Token");
+                throw new TokenException("Invalid or expired Refresh Token");
 
-            ApplicationUser? User = await _userManager.FindByIdAsync(StoredRefreshToken.ApplicationUserID);
+            ApplicationUser? User = await _userManager.FindByIdAsync(StoredRefreshToken.UserID);
             if (User is null)
-                throw new ApplicationException("There isn't any user assigned to this Refresh Token.");
+                throw new TokenException("There isn't any user assigned to this Refresh Token.");
 
             StoredRefreshToken.RevokedOn = DateTime.UtcNow;
             _context.RefreshTokens.Update(StoredRefreshToken);

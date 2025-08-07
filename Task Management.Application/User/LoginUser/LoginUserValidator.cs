@@ -9,7 +9,7 @@ namespace Task_Management.Application.User.LoginUser
 {
     public class LoginUserValidator : AbstractValidator<LoginUserCommand>
     {
-        LoginUserValidator()
+        public LoginUserValidator()
         {
             RuleFor(x => x.UserNameOrEmail)
                 .Cascade(CascadeMode.Stop)

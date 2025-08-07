@@ -10,7 +10,7 @@ namespace Task_Management.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public Guid? UserID { get; set; }
+        public string? UserID { get; set; }
         public ApplicationUser? User { get; set; }
 
         public int? ProjectID { get; set; }

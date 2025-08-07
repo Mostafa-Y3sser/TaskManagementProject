@@ -12,8 +12,8 @@ using Task_Management.Infrastructure.Persistence.Data;
 namespace Task_Management.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250803164928_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20250807194201_ReinitialiazeAllFeatures")]
+    partial class ReinitialiazeAllFeatures
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -251,17 +251,14 @@ namespace Task_Management.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ProjectID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Boards");
                 });
@@ -282,17 +279,47 @@ namespace Task_Management.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Task_Management.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RevokedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Task_Management.Domain.Entities.TaskActivity", b =>
@@ -314,17 +341,14 @@ namespace Task_Management.Infrastructure.Migrations
                     b.Property<int>("TaskItemID")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("TaskItemID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("TaskActivities");
                 });
@@ -419,7 +443,7 @@ namespace Task_Management.Infrastructure.Migrations
 
                     b.HasOne("Task_Management.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Boards")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserID");
 
                     b.Navigation("Project");
 
@@ -430,7 +454,20 @@ namespace Task_Management.Infrastructure.Migrations
                 {
                     b.HasOne("Task_Management.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Task_Management.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Task_Management.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -445,7 +482,7 @@ namespace Task_Management.Infrastructure.Migrations
 
                     b.HasOne("Task_Management.Domain.Entities.ApplicationUser", "User")
                         .WithMany("TaskActivities")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserID");
 
                     b.Navigation("Task");
 
@@ -468,6 +505,8 @@ namespace Task_Management.Infrastructure.Migrations
                     b.Navigation("Boards");
 
                     b.Navigation("Projects");
+
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("TaskActivities");
                 });

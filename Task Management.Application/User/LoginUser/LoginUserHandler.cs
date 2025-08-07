@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Task_Management.Application.Dtos;
 using Task_Management.Application.Interfaces;
 using Task_Management.Domain.Entities;
+using Task_Management.Domain.Exceptions;
 
 namespace Task_Management.Application.User.LoginUser
 {
@@ -24,7 +25,7 @@ namespace Task_Management.Application.User.LoginUser
                 await _userManager.FindByEmailAsync(command.UserNameOrEmail);
 
             if (User is null || !await _userManager.CheckPasswordAsync(User, command.Password))
-                throw new ApplicationException("Invalid User Name or Password.");
+                throw new LoginUserException("Invalid User Name or Password.");
 
             JwtSecurityToken accessToken = await _jwtTokenService.CreateAccessTokenAsync(User);
             RefreshToken refreshToken = await _jwtTokenService.CreateRefreshTokenAsync(User.Id);

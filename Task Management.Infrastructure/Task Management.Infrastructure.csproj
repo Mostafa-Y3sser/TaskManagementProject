@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Task Management.Domain\Task Management.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

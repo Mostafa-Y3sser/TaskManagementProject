@@ -15,7 +15,7 @@ namespace Task_Management.Domain.Entities
 
         public bool IsActive => RevokedOn == null && !IsExpired;
 
-        public string ApplicationUserID { get; set; } = string.Empty;
+        public string UserID { get; set; } = string.Empty;
         public ApplicationUser? User { get; set; }
     }
 }

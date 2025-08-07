@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Task_Management.Application.Dtos;
 using Task_Management.Application.Interfaces;
 using Task_Management.Domain.Entities;
+using Task_Management.Domain.Exceptions;
 using Task_Management.Domain.Interfaces;
 
 namespace Task_Management.Application.User.CreateUser
@@ -20,23 +21,23 @@ namespace Task_Management.Application.User.CreateUser
             _jwtTokenService = jwtTokenService;
         }
 
-        public async Task<AuthGeneralResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<AuthGeneralResponse> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
             ApplicationUser User = new()
             {
-                FullName = $"{request.FirstName} {request.LastName}",
-                Email = request.Email,
-                UserName = new MailAddress(request.Email).User
+                FullName = $"{command.FirstName} {command.LastName}",
+                Email = command.Email,
+                UserName = new MailAddress(command.Email).User
             };
+
+            IdentityResult Result = await _userManager.CreateAsync(User, command.Password);
+            if (!Result.Succeeded)
+                throw new CreateUserException($"User creation failed due to : " +
+                    $"{String.Join(", ", Result.Errors.Select(e => e.Description))}");
 
             JwtSecurityToken accessToken = await _jwtTokenService.CreateAccessTokenAsync(User);
             RefreshToken refreshToken = await _jwtTokenService.CreateRefreshTokenAsync(User.Id);
             _jwtTokenService.SetRefreshTokenInCookie(refreshToken);
-
-            IdentityResult Result = await _userManager.CreateAsync(User, request.Password);
-            if (!Result.Succeeded)
-                throw new ApplicationException($"User creation failed due to : " +
-                    $"{String.Join(", ", Result.Errors.Select(e => e.Description))}");
 
             return new AuthGeneralResponse()
             {

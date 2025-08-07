@@ -34,14 +34,20 @@ namespace Task_Management.Controllers
         }
 
         [HttpPost("RevokeRefreshToken")]
-        public async Task<IActionResult> RevokeRefreshToken(RevokeRefreshTokenCommand command)
+        public async Task<IActionResult> RevokeRefreshToken(RevokeRefreshTokenCommand command = null!)
         {
+            if (command is null)
+            {
+                command = new RevokeRefreshTokenCommand();
+                command.Token = Request.Cookies["RefreshToken"] ?? String.Empty;
+            }
+
             bool Result = await _mediator.Send(command);
             return Result ? Ok("Refresh token revoked successfully") : BadRequest("Invalid or expired refresh token");
         }
 
         [HttpPost("RefreshToken")]
-        public async Task<IActionResult> RefreshToken(RefreshTokenCommand command)
+        public async Task<IActionResult> RefreshToken(RefreshTokenCommand command = null!)
         {
             if (command is null)
             {

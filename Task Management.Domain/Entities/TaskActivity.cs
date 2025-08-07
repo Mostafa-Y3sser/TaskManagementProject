@@ -11,7 +11,7 @@ namespace Task_Management.Domain.Entities
         public int TaskItemID { get; set; }
         public TaskItem Task { get; set; } = new TaskItem();
 
-        public Guid UserID { get; set; }
+        public string? UserID { get; set; }
         public ApplicationUser User { get; set; } = new ApplicationUser();
     }
 }

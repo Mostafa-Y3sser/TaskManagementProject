@@ -7,12 +7,10 @@ namespace Task_Management.Application.User.refreshToken
 {
     public class RefreshTokenHandler : IRequestHandler<RefreshTokenCommand, AuthGeneralResponse>
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IJwtTokenService _jwtTokenService;
 
-        public RefreshTokenHandler(IHttpContextAccessor httpContextAccessor, IJwtTokenService jwtTokenService)
+        public RefreshTokenHandler(IJwtTokenService jwtTokenService)
         {
-            _httpContextAccessor = httpContextAccessor;
             _jwtTokenService = jwtTokenService;
         }
 

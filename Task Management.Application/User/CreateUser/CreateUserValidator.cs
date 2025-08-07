@@ -25,6 +25,8 @@ namespace Task_Management.Application.User.CreateUser
                 .NotEmpty().WithMessage("Password is required.");
 
             RuleFor(x => x.ConfirmPassword)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage("Confirm Password is required.")
                 .Equal(x => x.Password).WithMessage("Confirm Password must match the Password.");
         }
     }

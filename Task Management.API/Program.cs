@@ -6,6 +6,7 @@ using Task_Management.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Task_Management.Middlewares;
 
 namespace Task_Management
 {
@@ -72,6 +73,8 @@ namespace Task_Management
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.MapControllers();
 
