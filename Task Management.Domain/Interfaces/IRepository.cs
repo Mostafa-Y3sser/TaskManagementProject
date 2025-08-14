@@ -15,5 +15,7 @@ namespace Task_Management.Domain.Interfaces
         Task RemoveAsync(int ID);
 
         Task RemoveRangeAsync(IEnumerable<T> Entities);
+
+        Task<bool> AnyAsync(Expression<Func<T, bool>> Filter, CancellationToken cancellationToken);
     }
 }

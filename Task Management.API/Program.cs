@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Task_Management.Middlewares;
+using Task_Management.Application.Interfaces;
+using Task_Management.Infrastructure.Services;
 
 namespace Task_Management
 {
@@ -30,6 +32,7 @@ namespace Task_Management
             builder.Services.AddScoped<IRepository<TaskItem>, TaskRepository>();
             builder.Services.AddScoped<IRepository<Board>, BoardRepository>();
             builder.Services.AddScoped<IRepository<Project>, ProjectRepository>();
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();

@@ -8,7 +8,6 @@ namespace Task_Management.Domain.Entities
         public string BoardName { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public string? UserID { get; set; }
         public ApplicationUser? User { get; set; }

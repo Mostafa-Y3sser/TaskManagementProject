@@ -282,7 +282,7 @@ namespace Task_Management.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Boards_ProjectID",
                 table: "Boards",
-                column: "ProjectID");
+                column: "ProjectName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Boards_UserID",

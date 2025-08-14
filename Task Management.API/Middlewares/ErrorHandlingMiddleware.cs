@@ -56,6 +56,16 @@ namespace Task_Management.Middlewares
                     response = ApiResponse<object>.Fail(Tokenex.Message);
                     break;
 
+                case NotFoundException NotFoundex:
+                    statusCode = HttpStatusCode.NotFound;
+                    response = ApiResponse<object>.Fail(NotFoundex.Message);
+                    break;
+
+                case UnauthorizedAccessException Unauthorizedex:
+                    statusCode = HttpStatusCode.Unauthorized;
+                    response = ApiResponse<object>.Fail(Unauthorizedex.Message);
+                    break;
+
                 default:
                     statusCode = HttpStatusCode.InternalServerError;
                     response = ApiResponse<object>.Fail("An unexpected error occurred");

@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Task_Management.Application.Dtos;
-using Task_Management.Application.User.CreateUser;
-using Task_Management.Application.User.LoginUser;
-using Task_Management.Application.User.refreshToken;
-using Task_Management.Application.User.RevokeToken;
+using Task_Management.Application.UserOperations.CreateUser;
+using Task_Management.Application.UserOperations.LoginUser;
+using Task_Management.Application.UserOperations.refreshToken;
+using Task_Management.Application.UserOperations.RevokeToken;
 
 namespace Task_Management.Controllers
 {

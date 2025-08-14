@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Task_Management.Domain.Entities;
+using Task_Management.Domain.Exceptions;
 using Task_Management.Domain.Interfaces;
 using Task_Management.Infrastructure.Persistence.Data;
 
@@ -42,7 +43,7 @@ namespace Task_Management.Infrastructure.Persistence.Repositories
                 foreach (string IncludeProp in IncludeProperties!.Split(",", StringSplitOptions.RemoveEmptyEntries))
                     Query = Query.Include(IncludeProp.Trim());
 
-            return await Query.FirstOrDefaultAsync() ?? throw new ArgumentException("Entity not found with the provided filter.");
+            return await Query.FirstOrDefaultAsync() ?? throw new NotFoundException("Entity not found.");
         }
 
         public async Task AddAsync(Project Entity)
@@ -77,6 +78,11 @@ namespace Task_Management.Infrastructure.Persistence.Repositories
 
             DbSet.RemoveRange(Entities);
             await Task.CompletedTask;
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<Project, bool>> Filter, CancellationToken cancellationToken = default)
+        {
+            return await DbSet.AnyAsync(Filter, cancellationToken);
         }
     }
 }

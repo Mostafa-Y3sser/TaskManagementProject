@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +52,7 @@ namespace Task_Management.Infrastructure.Services
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: UserClaims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JWT: TokenExpirationInMinutes"])),
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(20)),
                 signingCredentials: SigningCred
                 );
 

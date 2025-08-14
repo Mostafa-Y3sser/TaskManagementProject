@@ -245,7 +245,7 @@ namespace Task_Management.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProjectID")
+                    b.Property<int?>("ProjectName")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -256,7 +256,7 @@ namespace Task_Management.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ProjectID");
+                    b.HasIndex("ProjectName");
 
                     b.HasIndex("UserID");
 
@@ -439,7 +439,7 @@ namespace Task_Management.Infrastructure.Migrations
                 {
                     b.HasOne("Task_Management.Domain.Entities.Project", "Project")
                         .WithMany("Boards")
-                        .HasForeignKey("ProjectID");
+                        .HasForeignKey("ProjectName");
 
                     b.HasOne("Task_Management.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Boards")

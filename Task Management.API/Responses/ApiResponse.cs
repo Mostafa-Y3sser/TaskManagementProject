@@ -1,4 +1,6 @@
-﻿namespace Task_Management.Responses
+﻿using System;
+
+namespace Task_Management.Responses
 {
     public class ApiResponse<T>
     {
