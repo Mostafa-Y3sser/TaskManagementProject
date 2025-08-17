@@ -12,7 +12,5 @@ namespace Task_Management.Domain.Entities
 
         public int BoardID { get; set; }
         public Board? Board { get; set; }
-
-        public List<TaskActivity>? TaskActivities { get; set; }
     }
 }

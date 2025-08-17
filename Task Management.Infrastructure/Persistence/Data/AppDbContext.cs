@@ -10,7 +10,6 @@ namespace Task_Management.Infrastructure.Persistence.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<TaskItem> TaskItems { get; set; }
-        public DbSet<TaskActivity> TaskActivities { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

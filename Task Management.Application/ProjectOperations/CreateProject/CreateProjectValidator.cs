@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Task_Management.Application.Interfaces;
-using Task_Management.Domain.Entities;
 using Task_Management.Domain.Interfaces;
 
 namespace Task_Management.Application.ProjectOperations.CreateProject

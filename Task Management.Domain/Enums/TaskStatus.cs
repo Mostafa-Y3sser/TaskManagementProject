@@ -4,7 +4,7 @@ namespace Task_Management.Domain.Enums
 {
     public enum enTaskStatus
     {
-        ToDo,
+        ToDo = 1,
         InProgress,
         Done
     }

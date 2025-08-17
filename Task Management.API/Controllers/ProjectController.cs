@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Task_Management.Application.Dtos;
 using Task_Management.Application.ProjectOperations.CreateProject;
 using Task_Management.Application.ProjectOperations.GetProject;
-using Task_Management.Domain.Entities;
 using Task_Management.Domain.Interfaces;
 using Task_Management.Responses;
 using Task_Management.Application.ProjectOperations.UpdateProject;
@@ -16,12 +15,10 @@ namespace Task_Management.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
 
         public ProjectController(IMediator mediator, IUnitOfWork unitOfWork)
         {
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
         }
 
         [HttpPost("CreateProject")]

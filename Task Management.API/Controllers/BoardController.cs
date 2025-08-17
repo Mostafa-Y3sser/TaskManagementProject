@@ -15,12 +15,10 @@ namespace Task_Management.Controllers
     public class BoardController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
 
         public BoardController(IMediator mediator, IUnitOfWork unitOfWork)
         {
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
         }
 
         [HttpPost("CreateBoard")]
