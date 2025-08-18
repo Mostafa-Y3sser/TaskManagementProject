@@ -6,12 +6,13 @@ using System.Text;
 using Task_Management.Middlewares;
 using Task_Management.Application.Interfaces;
 using Task_Management.Infrastructure.Services;
+using Task_Management.Infrastructure.Persistence.DBInitializer;
 
 namespace Task_Management
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +54,20 @@ namespace Task_Management
                     };
                 });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Cors",
+                    policy =>
+                    {
+                        policy.WithOrigins()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
+
             var app = builder.Build();
+
+            await Initializer(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -65,6 +79,8 @@ namespace Task_Management
 
             app.UseHttpsRedirection();
 
+            app.UseCors("Cors");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -73,6 +89,15 @@ namespace Task_Management
             app.MapControllers();
 
             app.Run();
+        }
+
+        static async Task Initializer(WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                await DBInitializer.InitializeAsync(serviceProvider);
+            }
         }
     }
 }
