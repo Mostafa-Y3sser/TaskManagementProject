@@ -1,8 +1,5 @@
-using Task_Management.Domain.Entities;
-using Task_Management.Domain.Interfaces;
 using Task_Management.Application.Extensions;
 using Task_Management.Infrastructure.Extensions;
-using Task_Management.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -18,20 +15,14 @@ namespace Task_Management
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
-            builder.Services.AddHttpContextAccessor();
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<IRepository<TaskItem>, TaskRepository>();
-            builder.Services.AddScoped<IRepository<Board>, BoardRepository>();
-            builder.Services.AddScoped<IRepository<Project>, ProjectRepository>();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             builder.Services.AddOpenApi();
