@@ -31,16 +31,8 @@ namespace Task_Management.Application.ProjectOperations.GetProject
 
             ProjectDto projectDto = new ProjectDto
             {
-                ProjectID = project.ID,
                 ProjectName = project.ProjectName,
                 Description = project.Description,
-                BoardDtos = project.Boards?.Select(board => new BoardDto
-                {
-                    BoardID = board.ID,
-                    BoardName = board.BoardName,
-                    Description = board.Description,
-                }).ToList() ?? new List<BoardDto>()
-
             };
 
             return projectDto;

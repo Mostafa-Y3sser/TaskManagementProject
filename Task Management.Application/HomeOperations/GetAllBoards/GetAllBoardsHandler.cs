@@ -30,7 +30,6 @@ namespace Task_Management.Application.HomeOperations.GetAllBoards
 
             return boards.Select(b => new BoardDto
             {
-                BoardID = b.ID,
                 BoardName = b.BoardName,
                 Description = b.Description ?? string.Empty,
                 CreatedAt = b.CreatedAt

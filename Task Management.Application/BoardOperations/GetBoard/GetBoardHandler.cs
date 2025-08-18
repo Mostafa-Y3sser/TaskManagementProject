@@ -29,18 +29,9 @@ namespace Task_Management.Application.BoardOperations.GetBoard
 
             BoardDto boardDto = new()
             {
-                BoardID = board.ID,
                 BoardName = board.BoardName,
                 Description = board.Description ?? string.Empty,
                 CreatedAt = board.CreatedAt,
-                TaskDtos = board.Tasks?.Select(task => new TaskDto
-                {
-                    TaskID = task.ID,
-                    TaskTitle = task.TaskTitle,
-                    CreatedAt = task.CreatedAt,
-                    Status = task.Status,
-                    DueDate = task.DueDate
-                }).ToList() ?? new List<TaskDto>()
             };
 
             return boardDto;

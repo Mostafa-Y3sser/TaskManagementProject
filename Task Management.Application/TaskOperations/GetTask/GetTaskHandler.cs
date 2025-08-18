@@ -30,7 +30,6 @@ namespace Task_Management.Application.TaskOperations.GetTask
 
             TaskDto taskDto = new TaskDto
             {
-                TaskID = task.ID,
                 TaskTitle = task.TaskTitle,
                 Status = task.Status,
                 CreatedAt = task.CreatedAt,

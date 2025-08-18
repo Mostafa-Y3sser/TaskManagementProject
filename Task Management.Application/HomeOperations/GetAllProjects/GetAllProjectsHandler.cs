@@ -31,7 +31,6 @@ namespace Task_Management.Application.HomeOperations.GetAllProjects
 
             return projects.Select(b => new ProjectDto
             {
-                ProjectID = b.ID,
                 ProjectName = b.ProjectName,
                 Description = b.Description ?? string.Empty,
             });
